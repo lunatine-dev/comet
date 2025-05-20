@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "module": "nodenext",
+        "moduleResolution": "nodenext"
+    },
+    "include": ["src"]
+}

@@ -6,6 +6,8 @@ import {
     generateEcosystem,
     isESModule,
 } from "#utils/prepareRepo";
+import { RepoLog } from "#models/github/RepoLog";
+import { Repo } from "#models/github/Repo";
 
 const listenEvents = ["push"];
 
@@ -26,7 +28,13 @@ export default async (request, reply) => {
 
     const localRepoDir = path.join(process.env.GITHUB_SAVE_DIR, repository.id);
 
-    const { repoExists, env } = checkRepoState(localRepoDir);
+    let { repoExists, env } = checkRepoState(localRepoDir);
+
+    const RepoDB = await Repo.findOne({
+        repository_id: repository.id,
+    });
+
+    env = RepoDB?.env ?? env;
 
     if (repoExists) {
         const stash = await runCommand("git stash", localRepoDir);
@@ -43,11 +51,11 @@ export default async (request, reply) => {
 
         if (clone.error)
             return reply.internalServerError("Failed to clone repo.");
-
-        await fs
-            .writeFile(path.join(localRepoDir, ".env"), env, "utf-8")
-            .catch(() => {});
     }
+
+    await fs
+        .writeFile(path.join(localRepoDir, ".env"), env, "utf-8")
+        .catch(() => {});
 
     const pkgExists = await fs
         .access(path.join(localRepoDir, "package.json"))
@@ -81,6 +89,30 @@ export default async (request, reply) => {
 
     //save apps, silently error
     const saveState = await runCommand("pm2 save", localRepoDir);
+
+    await RepoLog.create({
+        repository_id: repository.id,
+        install: install.error ? 1 : 0,
+        response: run.error ? 1 : 0,
+        clone: !repoExists,
+    });
+    await Repo.findOneAndUpdate(
+        {
+            repository_id: repository.id,
+        },
+        {
+            repository_id: repository.id,
+            name: repository.name,
+            owner: {
+                ...repository.owner,
+            },
+            visibility: repository.visibility,
+        },
+        {
+            upsert: true,
+            new: true,
+        }
+    );
 
     return reply.send({
         message: `App ${repoExists ? "restarted" : "started"}`,

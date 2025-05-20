@@ -2,7 +2,15 @@
     "compilerOptions": {
         "baseUrl": "src",
         "module": "nodenext",
-        "moduleResolution": "nodenext"
+        "moduleResolution": "nodenext",
+        "paths": {
+            "#utils/*": ["src/utils/*"],
+            "#constants/*": ["src/constants/*"],
+            "#routes/*": ["src/routes/*"],
+            "#services/*": ["src/services/*"],
+            "#middlewares/*": ["src/middlewares/*"],
+            "#models/*": ["src/models/*"]
+        }
     },
     "include": ["src"]
 }

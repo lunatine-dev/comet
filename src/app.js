@@ -3,7 +3,19 @@ import fastifyAutoload from "@fastify/autoload";
 import env from "@fastify/env";
 const schema = {
     type: "object",
-    required: ["MONGO_IP", "MONGO_DATABASE", "MONGO_PASSWORD"],
+    required: [
+        "MONGO_IP",
+        "MONGO_DATABASE",
+        "MONGO_PASSWORD",
+        "GITHUB_HOOK_SECRET",
+        "GITHUB_PAT_TOKEN",
+        "GITHUB_SAVE_DIR",
+        "GITHUB_CLIENT_ID",
+        "GITHUB_CLIENT_SECRET",
+        "GITHUB_CALLBACK_URL",
+        "OWNER_ID",
+        "JWT_SECRET",
+    ],
     properties: {
         RATE_LIMIT_MAX: {
             type: "number",

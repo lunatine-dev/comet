@@ -29,6 +29,9 @@ export default async function (fastify) {
         } else {
             dbUser.avatar = user?.avatar_url;
         }
+
+        await dbUser.save();
+
         const ip = request.ip;
         const userAgent = request.headers["user-agent"];
 

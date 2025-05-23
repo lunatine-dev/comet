@@ -65,7 +65,10 @@ export default async (request, reply) => {
 
     //repo is now either pulled or cloned, time to check if it's an ES Module or CommonJS
 
-    const install = await runCommand("pnpm install", localRepoDir);
+    const install = await runCommand(
+        "pnpm install --dangerously-allow-all-builds",
+        localRepoDir
+    );
 
     if (install.error)
         return reply.internalServerError("Failed to install modules");

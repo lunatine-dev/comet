@@ -9,12 +9,6 @@ const schema = new mongoose.Schema(
             access_token: { type: String },
             refresh_token: { type: String },
         },
-        accessToken: {
-            type: String,
-        },
-        refreshToken: {
-            type: String,
-        },
         created_at: {
             type: Date,
             default: Date.now,

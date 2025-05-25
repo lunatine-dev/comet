@@ -18,6 +18,12 @@ const repoSchema = new mongoose.Schema(
         env: {
             type: String,
         },
+        webhooks: {
+            type: Boolean,
+        },
+        setup: {
+            type: Boolean,
+        },
     },
     { timestamps: true }
 );

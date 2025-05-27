@@ -1,3 +1,5 @@
+import { octokit } from "#services/github";
+
 export default async function (fastify) {
     fastify.get("/is_node_app", async (request, reply) => {
         try {
@@ -28,13 +30,11 @@ export default async function (fastify) {
                 pkg.svelte ||
                 pkg.react;
 
-            const isLikelyNodeApp =
-                !isFrontend &&
-                typeof pkg.main === "string" && // typically backend apps
-                (!pkg.scripts || !pkg.scripts.build); // no build step = likely backend
+            const isLikelyNodeApp = !isFrontend && typeof pkg.main === "string"; // typically backend apps
 
             return { is_node_app: isLikelyNodeApp };
         } catch (err) {
+            console.log(err);
             return { is_node_app: false };
         }
     });

@@ -22,6 +22,8 @@ export const issueRefreshToken = async (userId, ip, userAgent) => {
         userAgent,
     });
 
+    console.log("Raw token", rawToken);
+
     return rawToken;
 };
 

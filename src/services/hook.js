@@ -110,6 +110,7 @@ export default async (request, reply) => {
                 ...repository.owner,
             },
             visibility: repository.visibility,
+            directory_exists: true,
         },
         {
             upsert: true,

@@ -1,3 +1,5 @@
+import { User } from "#models/github/User";
+import { issueAccessToken } from "#services/accessTokenService";
 import { rotateRefreshToken } from "#services/refreshTokenService";
 
 export default async function (fastify) {
@@ -5,6 +7,8 @@ export default async function (fastify) {
         const { refreshToken } = request.body;
         const ip = request.ip;
         const userAgent = request.headers["user-agent"];
+
+        console.log(request.body);
 
         // await RefreshToken.findOne()
         const { newRefreshToken, error, userId } = await rotateRefreshToken(
@@ -15,12 +19,10 @@ export default async function (fastify) {
 
         if (error) return reply.unauthorized("Session expired or invalid");
 
-        const accessToken = fastify.jwt.sign(
-            { sub: userId },
-            {
-                expiresIn: "30m",
-            }
-        );
+        const user = await User.findById(userId);
+        if (!user) return reply.unauthorized("Session expired or invalid");
+
+        const accessToken = issueAccessToken(user, fastify);
 
         return { refreshToken: newRefreshToken, accessToken };
     });

@@ -37,7 +37,7 @@ export default async function (fastify) {
 
         //first create an access token
         const accessToken = issueAccessToken(dbUser, fastify);
-        const refreshToken = issueRefreshToken(dbUser._id, ip, userAgent);
+        const refreshToken = await issueRefreshToken(dbUser._id, ip, userAgent);
 
         const tempCode = crypto.randomUUID();
         saveTempCode(tempCode, {
@@ -56,6 +56,8 @@ export default async function (fastify) {
         if (!code) return reply.badRequest("Missing code");
 
         const tokens = useTempCode(code);
+
+        console.log("Tokens", tokens);
         if (!tokens) return reply.badRequest("Invalid or expired code");
 
         reply.send(tokens);

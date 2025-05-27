@@ -18,11 +18,15 @@ const repoSchema = new mongoose.Schema(
         env: {
             type: String,
         },
-        webhooks: {
-            type: Boolean,
+        webhook: {
+            type: String,
         },
         setup: {
             type: Boolean,
+        },
+        directory_exists: {
+            type: Boolean,
+            default: false,
         },
     },
     { timestamps: true }

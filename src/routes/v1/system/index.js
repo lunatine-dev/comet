@@ -1,5 +1,5 @@
 import si from "systeminformation";
-import getPm2DashboardSummary from "#services/pm2";
+import { getAugmentedPm2Apps } from "#services/pm2";
 
 export default async function (fastify) {
     fastify.get("/info", async (request, reply) => {
@@ -45,7 +45,7 @@ export default async function (fastify) {
             // OS info
             const osData = `${osInfo.distro} ${osInfo.release}`;
 
-            const apps = await getPm2DashboardSummary();
+            const apps = await getAugmentedPm2Apps();
 
             // Send final response
             reply.send({

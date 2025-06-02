@@ -91,7 +91,10 @@ export default async (request, reply) => {
     }
 
     const run = await runCommand(cmd, localRepoDir);
-    if (run.error) return reply.internalServerError("Failed to run app");
+    if (run.error) {
+        console.error(run, cmd);
+        return reply.internalServerError("Failed to run app");
+    }
 
     //save apps, silently error
     const saveState = await runCommand("pm2 save", localRepoDir);

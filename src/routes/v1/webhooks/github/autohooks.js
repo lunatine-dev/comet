@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 export default async function (fastify) {
-    fastify.addHook("onRequest", async (request, reply) => {
+    fastify.addHook("preValidation", async (request, reply) => {
         const signature = request.headers["x-hub-signature"];
         const payload = JSON.stringify(request.body);
         const hash = crypto

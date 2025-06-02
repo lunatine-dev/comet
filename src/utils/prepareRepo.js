@@ -82,7 +82,7 @@ export async function generateEcosystem(githubRepo, name, es6 = true) {
     const config = `module.exports = {
   apps: [
     {
-      name: "${name}",
+      name: "${name.toString()}",
       kill_timeout: 3000,
       script: "${main}",
       env_production: {

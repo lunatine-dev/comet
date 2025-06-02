@@ -26,7 +26,10 @@ export default async (request, reply) => {
     if (branch !== default_branch)
         return reply.send({ message: "Must be default branch" });
 
-    const localRepoDir = path.join(process.env.GITHUB_SAVE_DIR, repository.id);
+    const localRepoDir = path.join(
+        process.env.GITHUB_SAVE_DIR,
+        repository.id.toString()
+    );
 
     let { repoExists, env } = checkRepoState(localRepoDir);
 
@@ -45,7 +48,7 @@ export default async (request, reply) => {
     } else {
         const cloneURI = `https://oauth2:${process.env.GITHUB_PAT_TOKEN}@github.com/${repository.full_name}.git`;
         const clone = await runCommand(
-            `git clone ${cloneURI} ${repository.id}`,
+            `git clone ${cloneURI} ${repository.id.toString()}`,
             process.env.GITHUB_SAVE_DIR
         );
 
@@ -82,7 +85,7 @@ export default async (request, reply) => {
     let cmd = `env -i NODE_ENV=production PATH=${process.env.PATH} HOME=${process.env.HOME}`;
 
     if (repoExists) {
-        cmd += ` pm2 restart ${repository.id}`;
+        cmd += ` pm2 restart ${repository.id.toString()}`;
     } else {
         cmd += ` pm2 start ${ecosystemFile} --env production`;
     }

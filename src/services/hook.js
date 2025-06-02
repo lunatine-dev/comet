@@ -31,7 +31,7 @@ export default async (request, reply) => {
         repository.id.toString()
     );
 
-    let { repoExists, env } = checkRepoState(localRepoDir);
+    let { repoExists, env } = await checkRepoState(localRepoDir);
     console.log("Repo exists?", repoExists, "Env?", env);
 
     const RepoDB = await Repo.findOne({

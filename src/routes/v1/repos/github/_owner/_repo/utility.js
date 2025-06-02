@@ -1,3 +1,4 @@
+import runCommand from "#services/cli";
 import { octokit } from "#services/github";
 
 export default async function (fastify) {
@@ -37,5 +38,25 @@ export default async function (fastify) {
             console.log(err);
             return { is_node_app: false };
         }
+    });
+
+    fastify.get("/pm2_status", async (request, reply) => {
+        const { owner, repo } = request.params;
+
+        const { data } = await octokit.request("GET /repos/{owner}/{repo}", {
+            owner,
+            repo,
+        });
+
+        const { id } = data;
+
+        const { stdout } = await runCommand(`pm2 jlist`);
+
+        const apps = JSON.parse(stdout);
+        const app = apps.find((itm) => itm.name === id.toString());
+
+        let status = app ? app.pm2_env.status === "online" : false;
+
+        return { status };
     });
 }

@@ -43,6 +43,7 @@ export default async (fastify, opts) => {
         dir: path.join(import.meta.dirname, "routes"),
         autoHooks: true,
         routeParams: true,
+        cascadeHooks: true,
         options: { ...opts },
     });
     fastify.setErrorHandler((err, request, reply) => {

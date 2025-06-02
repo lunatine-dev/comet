@@ -101,7 +101,7 @@ export default async (request, reply) => {
     const saveState = await runCommand("pm2 save", localRepoDir);
 
     await RepoLog.create({
-        repository_id: repository.id,
+        repository: repository.id.toString(),
         install: install.error ? 1 : 0,
         response: run.error ? 1 : 0,
         clone: !repoExists,

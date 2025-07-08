@@ -35,3 +35,7 @@ npm install
 # Add environment variables (MongoDB URI, GitHub secrets, etc.)
 npm run start
 ```
+
+## 📦 Related project
+
+-   **[comet-frontend](https://github.com/lunatine-dev/comet-frontend)** – SvelteKit dashboard to manage repos, environment variables, and deployments.
